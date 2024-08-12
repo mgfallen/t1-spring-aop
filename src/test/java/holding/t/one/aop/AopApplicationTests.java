@@ -1,4 +1,4 @@
-package holding_t_one.aop;
+package holding.t.one.aop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
