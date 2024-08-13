@@ -65,6 +65,7 @@
     Для разработки (профиль по умолчанию):
     ```bash
     mvn spring-boot:run
+
     Для продакшн-версии:
     ```bash
     mvn spring-boot:run -Dspring.profiles.active=prod
