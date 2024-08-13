@@ -69,10 +69,12 @@
 4. **Запуск приложения:**
     Для разработки (профиль по умолчанию):
     ```bash
-    mvn spring-boot:run```
+    mvn spring-boot:run
+    ```
       or
     ```bash
-    ./mvwn spring-boot:run```
+    ./mvwn spring-boot:run
+    ```
     
   Для продакшн-версии:
     ```bash
@@ -84,11 +86,13 @@
     ```
     
   ### Консоль базы данных H2
-    Если вы запускаете приложение в профиле dev, вы можете получить доступ к консоли базы данных H2 по адресу:
+  Если вы запускаете приложение в профиле dev, вы можете получить доступ к консоли базы данных H2 по адресу:
+      ```
       URL: http://localhost:8080/h2-console
       JDBC URL: jdbc:h2:mem:testdb
       Имя пользователя: user
       Пароль: pass
+      ```
 ## Логирование с использованием AOP
   - Аспект логирования определен в классе LoggingAspect в пакете aspects. Он использует различные аннотации AOP для перехвата вызовов методов в сервисном слое и логирования:
   - Имя метода и аргументы (@Before)
@@ -97,31 +101,39 @@
   - Исключения (@AfterThrowing)
 
 ## REST API Эндпоинты
-    Эндпоинты для пользователя
+  Эндпоинты для пользователя
+    ```
     - GET /users/{id}: Получить пользователя по ID.
     - POST /users: Создать нового пользователя.
     - DELETE /users/{id}: Удалить пользователя по ID.
     - PUT /users/{id}: Обновить пользователя по ID.
     - POST /users/{id}/orders: Добавить заказ пользователю.
     - GET /users/all: Получить всех пользователей.
-    Эндпоинты для заказов
+    ```
+  Эндпоинты для заказов
+    ```
     - GET /orders/{id}: Получить заказ по ID.
     - POST /orders: Создать новый заказ.
     - DELETE /orders/{id}: Удалить заказ по ID.
     - PUT /orders/{id}: Обновить заказ по ID.
     - GET /orders/all: Получить все заказы.
+    ```
     
 ## Обработка исключений
    Пользовательские исключения (UserDomainException, OrderDomainException) используются для обработки ошибок, связанных с доменом, например, когда пользователь или заказ не найден. Эти исключения логируются с помощью совета @AfterThrowing в LoggingAspect.
 
 ## Тестирование
-    ```mvn test```
+    ```bash
+    mvn test
+    ```
     or
-    ```./mvnw test```
+    ```bash
+    ./mvnw test
+    ```
 Этот проект включает интеграционные тесты, которые взаимодействуют с базой данных PostgreSQL, docker контейнер которой поднимается с помощью testcontainer.
 
-После выполнения команды mvn test по пути *target/surefire-reports* будут лежать логи отработки тестов. К примеру в *target/surefire-reports/TEST-holding.t.one.aop.integrational.UserServiceIntegrationTests.xml* можно увидеть, как работает LoggerAspect:
-
+После выполнения команды mvn test по пути *target/surefire-reports* будут лежать логи отработки тестов. К примеру в *target/surefire-reports/TEST-holding.t.one.aop.integrational.UserServiceIntegrationTests.xml* можно увидеть, как работает LoggerAspect.
+**Пример отработки аспекта**:
 ```
 <testcase name="testUpdateUserById" classname="holding.t.one.aop.integrational.UserServiceIntegrationTests" time="0.033">
     <system-out><![CDATA[2024-08-13T23:49:04.460+03:00  INFO 4800 --- [           main] h.t.one.aop.aspects.LoggingAspect        : Executing method: User holding.t.one.aop.service.UserService.createUser(User) with arguments: [User(userId=null, name=Peter Parker, email=peter.parker@example.com, orders=null)]
@@ -134,10 +146,12 @@
 ```
 
 ## Конфигурация профилей
-    Перед использованием приложение необходимо установить Docker. Приложение поддерживает два профиля:
+  Перед использованием приложение необходимо установить Docker. Приложение поддерживает два профиля:
     - dev: Использует встроенную базу данных H2.
     - prod: Настроен для работы с PostgreSQL. Убедитесь, что установлены следующие переменные окружения:
-        ```SPRING_DATASOURCE_URL
+        ```
+        SPRING_DATASOURCE_URL
         SPRING_DATASOURCE_USERNAME
-        SPRING_DATASOURCE_PASSWORD```
+        SPRING_DATASOURCE_PASSWORD
+        ```
     Вы можете переключаться между профилями с помощью свойства spring.profiles.active. (конфиг меняется в application.properties)
