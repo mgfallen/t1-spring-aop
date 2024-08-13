@@ -62,13 +62,18 @@
 2. **Сборка приложения:**
     ```bash
     mvn clean install
+    Или воспользоваться wrapper в корне проекта:
+    ./mvwn clean install
 3. **Запуск приложения:**
 
-   Для разработки (профиль по умолчанию):
+Для разработки (профиль по умолчанию):
     ```bash
     mvn spring-boot:run
-
-    Для продакшн-версии:
+  or
+     ```bash
+    ./mvwn spring-boot:run
+    
+  Для продакшн-версии:
     ```bash
     mvn spring-boot:run -Dspring.profiles.active=prod
 
