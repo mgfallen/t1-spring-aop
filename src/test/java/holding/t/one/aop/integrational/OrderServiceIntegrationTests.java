@@ -5,11 +5,13 @@ import holding.t.one.aop.model.User;
 import holding.t.one.aop.repository.UserRepository;
 import holding.t.one.aop.service.OrderService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -21,7 +23,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Testcontainers
+@ExtendWith(SpringExtension.class)
 @Transactional
 @ActiveProfiles("prod")
 public class OrderServiceIntegrationTests {
@@ -40,16 +42,27 @@ public class OrderServiceIntegrationTests {
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry registry) {
+        postgresContainer.start();
         registry.add("spring.datasource.url", postgresContainer::getJdbcUrl);
         registry.add("spring.datasource.username", postgresContainer::getUsername);
         registry.add("spring.datasource.password", postgresContainer::getPassword);
+        System.out.println("PostgreSQL URL: " + postgresContainer.getJdbcUrl());
+        System.out.println("PostgreSQL Username: " + postgresContainer.getUsername());
+        System.out.println("PostgreSQL Password: " + postgresContainer.getPassword());
+
     }
 
     @Test
     public void testCreateOrder() {
+        User user = new User();
+        user.setName("testUser");
+        user.setEmail("test@example.com");
+        user = userRepository.save(user);
+
         Order order = new Order();
         order.setDescription("Test Order");
         order.setStatus("NEW");
+        order.setUser(user);
 
         Order createdOrder = orderService.createOrder(order);
 
@@ -57,26 +70,42 @@ public class OrderServiceIntegrationTests {
         assertThat(createdOrder.getOrderId()).isNotNull();
         assertThat(createdOrder.getDescription()).isEqualTo("Test Order");
         assertThat(createdOrder.getStatus()).isEqualTo("NEW");
+        assertThat(createdOrder.getUser()).isEqualTo(user);
     }
 
     @Test
     public void testGetOrderById() {
+        // Создаем и сохраняем пользователя
+        User user = new User();
+        user.setName("Test User");
+        user.setEmail("testuser@example.com");
+        userRepository.save(user);
+
         Order order = new Order();
         order.setDescription("Another Order");
         order.setStatus("NEW");
+        order.setUser(user);
 
         Order savedOrder = orderService.createOrder(order);
         Optional<Order> retrievedOrder = orderService.getOrderById(savedOrder.getOrderId());
 
         assertThat(retrievedOrder).isPresent();
         assertThat(retrievedOrder.get().getDescription()).isEqualTo("Another Order");
+        assertThat(retrievedOrder.get().getUser()).isEqualTo(user);
     }
+
 
     @Test
     public void testDeleteOrderById() {
+        User user = new User();
+        user.setName("Test User");
+        user.setEmail("testuser@example.com");
+        userRepository.save(user);
+
         Order order = new Order();
         order.setDescription("Order to be deleted");
         order.setStatus("NEW");
+        order.setUser(user);
 
         Order savedOrder = orderService.createOrder(order);
         orderService.deleteOrderById(savedOrder.getOrderId());
@@ -111,10 +140,15 @@ public class OrderServiceIntegrationTests {
 
     @Test
     public void testUpdateOrderById() {
+        User user = new User();
+        user.setName("Test User");
+        user.setEmail("testuser@example.com");
+        userRepository.save(user);
+
         Order order = new Order();
         order.setDescription("Order to be updated");
         order.setStatus("NEW");
-
+        order.setUser(user);
 
         Order savedOrder = orderService.createOrder(order);
         savedOrder.setDescription("Updated Order");
@@ -125,4 +159,5 @@ public class OrderServiceIntegrationTests {
         assertThat(updatedOrder.getDescription()).isEqualTo("Updated Order");
         assertThat(updatedOrder.getStatus()).isEqualTo("UPDATED");
     }
+
 }

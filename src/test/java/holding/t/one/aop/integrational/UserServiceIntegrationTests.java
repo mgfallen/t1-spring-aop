@@ -51,35 +51,35 @@ public class UserServiceIntegrationTests {
     @Test
     public void testCreateUser() {
         User user = new User();
-        user.setName("John Doe");
-        user.setEmail("john.doe@example.com");
+        user.setName("Test user");
+        user.setEmail("test@user.com");
 
         User createdUser = userService.createUser(user);
 
         assertThat(createdUser).isNotNull();
         assertThat(createdUser.getUserId()).isNotNull();
-        assertThat(createdUser.getName()).isEqualTo("John Doe");
-        assertThat(createdUser.getEmail()).isEqualTo("john.doe@example.com");
+        assertThat(createdUser.getName()).isEqualTo("Test user");
+        assertThat(createdUser.getEmail()).isEqualTo("test@user.com");
     }
 
     @Test
     public void testGetUserById() {
         User user = new User();
-        user.setName("Jane Doe");
-        user.setEmail("jane.doe@example.com");
+        user.setName("Test user");
+        user.setEmail("test@user.com");
 
         User savedUser = userService.createUser(user);
         Optional<User> retrievedUser = userService.getUserById(savedUser.getUserId());
 
         assertThat(retrievedUser).isPresent();
-        assertThat(retrievedUser.get().getName()).isEqualTo("Jane Doe");
+        assertThat(retrievedUser.get().getName()).isEqualTo("Test user");
     }
 
     @Test
     public void testRemoveUserById() {
         User user = new User();
-        user.setName("Mark Smith");
-        user.setEmail("mark.smith@example.com");
+        user.setName("Test user");
+        user.setEmail("test@user.com");
 
         User savedUser = userService.createUser(user);
         userService.removeUserById(savedUser.getUserId());
@@ -95,13 +95,13 @@ public class UserServiceIntegrationTests {
         user.setEmail("peter.parker@example.com");
 
         User savedUser = userService.createUser(user);
-        savedUser.setName("Updated Name");
-        savedUser.setEmail("updated.email@example.com");
+        savedUser.setName("Parker Peter");
+        savedUser.setEmail("parker.peter@example.com");
 
         User updatedUser = userService.updateUserById(savedUser.getUserId(), savedUser);
 
-        assertThat(updatedUser.getName()).isEqualTo("Updated Name");
-        assertThat(updatedUser.getEmail()).isEqualTo("updated.email@example.com");
+        assertThat(updatedUser.getName()).isEqualTo("Parker Peter");
+        assertThat(updatedUser.getEmail()).isEqualTo("parker.peter@example.com");
     }
 
     @Test
