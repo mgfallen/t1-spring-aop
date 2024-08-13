@@ -1,3 +1,19 @@
+--this data inserts only in h2 in the dev config
+
+CREATE TABLE users (
+    user_id UUID PRIMARY KEY,
+    name VARCHAR(255),
+    email VARCHAR(255)
+);
+
+CREATE TABLE orders (
+    order_id UUID PRIMARY KEY,
+    description VARCHAR(255),
+    status VARCHAR(50),
+    user_id UUID,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
 INSERT INTO users (user_id, name, email) VALUES
     ('a1e8f28b-9c71-4f5b-9444-8e0a29be44c0', 'Jeremy Clarkson', 'angry.bird@gmail.com'),
     ('b2f9f348-a9cb-4e99-a012-2d9f3efc8f82', 'James May', 'captain.slow@gmail.com'),

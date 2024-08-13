@@ -16,10 +16,13 @@ public class Order {
     @Column(name = "order_id")
     private UUID orderId;
 
+    @Column(name = "description", nullable = false)
     private String description;
+
+    @Column(name = "status", nullable = false)
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }

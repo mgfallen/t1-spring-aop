@@ -43,8 +43,6 @@ public class UserServiceTests {
         assertEquals(userId, foundUser.get().getUserId());
     }
 
-
-
     @Test
     public void testCreateUser() {
         User user = new User();
