@@ -111,7 +111,19 @@
     mvn test
     or
     ./mvnw test
-Этот проект включает интеграционные тесты, которые взаимодействуют с базой данных PostgreSQL, которая поднимается с помощью testcontainer.
+Этот проект включает интеграционные тесты, которые взаимодействуют с базой данных PostgreSQL, docker контейнер которой поднимается с помощью testcontainer.
+
+После выполнения команды mvn test по пути *target/surefire-reports* будут лежать логи отработки тестов. К примеру в *target/surefire-reports/TEST-holding.t.one.aop.integrational.UserServiceIntegrationTests.xml* можно увидеть, как работает LoggerAspect:
+
+```<testcase name="testUpdateUserById" classname="holding.t.one.aop.integrational.UserServiceIntegrationTests" time="0.033">
+    <system-out><![CDATA[2024-08-13T23:49:04.460+03:00  INFO 4800 --- [           main] h.t.one.aop.aspects.LoggingAspect        : Executing method: User holding.t.one.aop.service.UserService.createUser(User) with arguments: [User(userId=null, name=Peter Parker, email=peter.parker@example.com, orders=null)]
+2024-08-13T23:49:04.463+03:00  INFO 4800 --- [           main] h.t.one.aop.aspects.LoggingAspect        : Method User holding.t.one.aop.service.UserService.createUser(User) returned with value: User(userId=c539bf65-0f41-4d7c-b201-f49f7d246b24, name=Peter Parker, email=peter.parker@example.com, orders=null)
+2024-08-13T23:49:04.464+03:00  INFO 4800 --- [           main] h.t.one.aop.aspects.LoggingAspect        : Completed method: User holding.t.one.aop.service.UserService.createUser(User)
+2024-08-13T23:49:04.464+03:00  INFO 4800 --- [           main] h.t.one.aop.aspects.LoggingAspect        : Executing method: User holding.t.one.aop.service.UserService.updateUserById(UUID,User) with arguments: [c539bf65-0f41-4d7c-b201-f49f7d246b24, User(userId=c539bf65-0f41-4d7c-b201-f49f7d246b24, name=Updated Name, email=updated.email@example.com, orders=null)]
+2024-08-13T23:49:04.471+03:00  INFO 4800 --- [           main] h.t.one.aop.aspects.LoggingAspect        : Method User holding.t.one.aop.service.UserService.updateUserById(UUID,User) returned with value: User(userId=c539bf65-0f41-4d7c-b201-f49f7d246b24, name=Updated Name, email=updated.email@example.com, orders=null)
+2024-08-13T23:49:04.472+03:00  INFO 4800 --- [           main] h.t.one.aop.aspects.LoggingAspect        : Completed method: User holding.t.one.aop.service.UserService.updateUserById(UUID,User)
+]]></system-out>
+
 
 ## Конфигурация профилей
     Перед использованием приложение необходимо установить Docker. Приложение поддерживает два профиля:
