@@ -122,16 +122,16 @@
    Пользовательские исключения (UserDomainException, OrderDomainException) используются для обработки ошибок, связанных с доменом, например, когда пользователь или заказ не найден. Эти исключения логируются с помощью совета @AfterThrowing в LoggingAspect.
 
 ## Тестирование
-    ```bash
-    mvn test
-    ```
-    or
-    ```bash
-    ./mvnw test
-    ```
+  ```bash
+  mvn test
+  ```
+  or
+  ```bash
+  ./mvnw test
+  ```
 Этот проект включает интеграционные тесты, которые взаимодействуют с базой данных PostgreSQL, docker контейнер которой поднимается с помощью testcontainer.
 
-После выполнения команды mvn test по пути *target/surefire-reports* будут лежать логи отработки тестов. К примеру в *target/surefire-reports/TEST-holding.t.one.aop.integrational.UserServiceIntegrationTests.xml* можно увидеть, как работает LoggerAspect.
+После выполнения команды **mvn test** по пути *target/surefire-reports* будут лежать логи отработки тестов. К примеру в *target/surefire-reports/TEST-holding.t.one.aop.integrational.UserServiceIntegrationTests.xml* можно увидеть, как работает LoggerAspect.
 **Пример отработки аспекта**:
 ```
 <testcase name="testUpdateUserById" classname="holding.t.one.aop.integrational.UserServiceIntegrationTests" time="0.033">
