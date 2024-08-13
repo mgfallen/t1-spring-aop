@@ -151,5 +151,4 @@
       - SPRING_DATASOURCE_URL
       - SPRING_DATASOURCE_USERNAME
       - SPRING_DATASOURCE_PASSWORD
-      - 
 Вы можете переключаться между профилями с помощью свойства spring.profiles.active. (конфиг меняется в application.properties)
