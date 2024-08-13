@@ -18,8 +18,6 @@
 - [Обработка исключений](#обработка-исключений)
 - [Тестирование](#тестирование)
 - [Конфигурация профилей](#конфигурация-профилей)
-- [Вклад в проект](#вклад-в-проект)
-- [Лицензия](#лицензия)
 
 ## Обзор
 
@@ -58,24 +56,33 @@
    ```bash
    git clone https://github.com/your-repo/aop-logging-application.git
    cd aop-logging-application
+   ```
 
 2. **Сборка приложения:**
     ```bash
     mvn clean install
+    ```
     or
+    ```bash
     ./mvwn clean install
-3. **Запуск приложения:**
+    ```
+4. **Запуск приложения:**
     Для разработки (профиль по умолчанию):
     ```bash
-    mvn spring-boot:run
+    mvn spring-boot:run```
       or
-    ./mvwn spring-boot:run
+    ```bash
+    ./mvwn spring-boot:run```
     
   Для продакшн-версии:
     ```bash
     mvn spring-boot:run -Dspring.profiles.active=prod
-
-  
+    ```
+    or
+    ```bash
+    ./mvwn spring-boot:run -Dspring.profiles.active=prod
+    ```
+    
   ### Консоль базы данных H2
     Если вы запускаете приложение в профиле dev, вы можете получить доступ к консоли базы данных H2 по адресу:
       URL: http://localhost:8080/h2-console
@@ -108,14 +115,15 @@
    Пользовательские исключения (UserDomainException, OrderDomainException) используются для обработки ошибок, связанных с доменом, например, когда пользователь или заказ не найден. Эти исключения логируются с помощью совета @AfterThrowing в LoggingAspect.
 
 ## Тестирование
-    mvn test
+    ```mvn test```
     or
-    ./mvnw test
+    ```./mvnw test```
 Этот проект включает интеграционные тесты, которые взаимодействуют с базой данных PostgreSQL, docker контейнер которой поднимается с помощью testcontainer.
 
 После выполнения команды mvn test по пути *target/surefire-reports* будут лежать логи отработки тестов. К примеру в *target/surefire-reports/TEST-holding.t.one.aop.integrational.UserServiceIntegrationTests.xml* можно увидеть, как работает LoggerAspect:
 
-```<testcase name="testUpdateUserById" classname="holding.t.one.aop.integrational.UserServiceIntegrationTests" time="0.033">
+```
+<testcase name="testUpdateUserById" classname="holding.t.one.aop.integrational.UserServiceIntegrationTests" time="0.033">
     <system-out><![CDATA[2024-08-13T23:49:04.460+03:00  INFO 4800 --- [           main] h.t.one.aop.aspects.LoggingAspect        : Executing method: User holding.t.one.aop.service.UserService.createUser(User) with arguments: [User(userId=null, name=Peter Parker, email=peter.parker@example.com, orders=null)]
 2024-08-13T23:49:04.463+03:00  INFO 4800 --- [           main] h.t.one.aop.aspects.LoggingAspect        : Method User holding.t.one.aop.service.UserService.createUser(User) returned with value: User(userId=c539bf65-0f41-4d7c-b201-f49f7d246b24, name=Peter Parker, email=peter.parker@example.com, orders=null)
 2024-08-13T23:49:04.464+03:00  INFO 4800 --- [           main] h.t.one.aop.aspects.LoggingAspect        : Completed method: User holding.t.one.aop.service.UserService.createUser(User)
@@ -123,13 +131,13 @@
 2024-08-13T23:49:04.471+03:00  INFO 4800 --- [           main] h.t.one.aop.aspects.LoggingAspect        : Method User holding.t.one.aop.service.UserService.updateUserById(UUID,User) returned with value: User(userId=c539bf65-0f41-4d7c-b201-f49f7d246b24, name=Updated Name, email=updated.email@example.com, orders=null)
 2024-08-13T23:49:04.472+03:00  INFO 4800 --- [           main] h.t.one.aop.aspects.LoggingAspect        : Completed method: User holding.t.one.aop.service.UserService.updateUserById(UUID,User)
 ]]></system-out>
-
+```
 
 ## Конфигурация профилей
     Перед использованием приложение необходимо установить Docker. Приложение поддерживает два профиля:
     - dev: Использует встроенную базу данных H2.
     - prod: Настроен для работы с PostgreSQL. Убедитесь, что установлены следующие переменные окружения:
-        SPRING_DATASOURCE_URL
+        ```SPRING_DATASOURCE_URL
         SPRING_DATASOURCE_USERNAME
-        SPRING_DATASOURCE_PASSWORD
+        SPRING_DATASOURCE_PASSWORD```
     Вы можете переключаться между профилями с помощью свойства spring.profiles.active. (конфиг меняется в application.properties)
